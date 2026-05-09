@@ -1,17 +1,21 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from app.classifier import is_engineering_query
-from app.router import route_query
-from app.model_handler import query_model
-from app.evaluator import score_response, select_best
-from app.memory import MemoryStore
-from app.self_optimizer import SelfOptimizer
+from app.router import process_query
+from app.domain_filter import is_engineering_query
+from app.memory import save_message, get_history
 
 app = FastAPI()
 
-memory = MemoryStore()
-optimizer = SelfOptimizer()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class ChatRequest(BaseModel):
@@ -21,44 +25,28 @@ class ChatRequest(BaseModel):
 
 @app.get("/")
 def home():
-    return {"message": "Multi-Model AI Backend is running 🚀"}
+    return {
+        "message": "Multi-Model AI Optimizer Running"
+    }
 
 
 @app.post("/chat")
-def chat(request: ChatRequest):
-
+async def chat(request: ChatRequest):
     query = request.query
     session_id = request.session_id
 
-    # 1. Engineering filter
     if not is_engineering_query(query):
         return {
-            "response": "❌ Sorry, this chatbot is only for engineering-related topics."
+            "response": "Sorry, this chatbot is only designed for engineering-related topics."
         }
 
-    category = route_query(query)
+    save_message(session_id, "user", query)
 
-    responses = []
+    response = await process_query(query)
 
-    for model_type in ["math", "code", "theory"]:
-        res = query_model(model_type, query)
-        score = score_response(res)
-
-        responses.append({
-            "response": res,
-            "score": score,
-            "model": model_type
-        })
-
-    best_response = select_best(responses)
-
-    memory.add(session_id, query, best_response)
-
-    avg_score = sum([r["score"] for r in responses]) / len(responses)
-    optimizer.adjust(avg_score)
+    save_message(session_id, "assistant", response)
 
     return {
-        "response": best_response,
-        "category": category,
-        "temperature": optimizer.temperature
+        "response": response,
+        "history": get_history(session_id)
     }

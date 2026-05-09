@@ -1,4 +1,1 @@
 .env 
-multi_ai/ 
-__pycache__/ 
-*.pyc 

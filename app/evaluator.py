@@ -14,3 +14,5 @@ def score_response(response: str) -> float:
 def select_best(responses):
     best = max(responses, key=lambda x: x["score"])
     return best["response"]
+
+

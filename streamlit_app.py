@@ -65,3 +65,4 @@ for chat in history[::-1]:
     st.write(f"**You:** {chat['query']}")
     st.write(f"**Bot:** {chat['response']}")
     st.markdown("---")
+
