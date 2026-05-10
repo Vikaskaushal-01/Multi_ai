@@ -31,3 +31,5 @@ def query_model(model_type, prompt):
 
     except Exception as e:
         return f"Request failed: {str(e)}"
+    
+    

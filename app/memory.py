@@ -1,15 +1,15 @@
-class MemoryStore:
-    def __init__(self):
-        self.sessions = {}
+chat_memory = {}
 
-    def add(self, session_id, query, response):
-        if session_id not in self.sessions:
-            self.sessions[session_id] = []
 
-        self.sessions[session_id].append({
-            "query": query,
-            "response": response
-        })
+def save_message(session_id, role, message):
+    if session_id not in chat_memory:
+        chat_memory[session_id] = []
 
-    def get(self, session_id):
-        return self.sessions.get(session_id, [])
+    chat_memory[session_id].append({
+        "role": role,
+        "message": message
+    })
+
+
+def get_history(session_id):
+    return chat_memory.get(session_id, [])
