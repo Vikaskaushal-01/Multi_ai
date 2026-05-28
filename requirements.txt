@@ -1,5 +1,10 @@
-streamlit
+fastapi
+uvicorn
+aiohttp
 python-dotenv
-requests
-numpy
-scikit-learn
+pydantic
+transformers
+torch
+accelerate
+sentencepiece
+safetensors
