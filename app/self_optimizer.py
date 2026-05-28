@@ -24,6 +24,7 @@ class SelfOptimizer:
         else:
             self.temperature -= 0.05
 
+
         self.temperature = max(
             self.min_temperature,
             min(self.temperature, self.max_temperature)
