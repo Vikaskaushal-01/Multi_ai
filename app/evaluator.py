@@ -1,34 +1,60 @@
-def score_response(response: str):
+def score_response(response):
 
     score = 0
 
-    if len(response) > 50:
-        score += 2
+    response = response.lower()
 
-    if "error" not in response.lower():
-        score += 2
+    if len(response) > 100:
+        score += 3
 
-    if len(response.split()) > 25:
-        score += 2
+    keywords = [
 
-    if "example" in response.lower():
-        score += 2
+        "python",
+        "example",
+        "function",
+        "class",
+        "algorithm",
+        "code"
+    ]
+
+    for keyword in keywords:
+
+        if keyword in response:
+            score += 1
+
+    bad_words = [
+        "error",
+        "failed"
+    ]
+
+    for word in bad_words:
+
+        if word in response:
+            score -= 5
 
     return score
+
 
 def get_best_response(responses):
 
     scored = []
 
-    for response in responses:
+    for item in responses:
 
-        score = score_response(response)
+        score = score_response(
+            item["response"]
+        )
 
-        scored.append((response, score))
+        scored.append({
+
+            "model": item["model"],
+            "response": item["response"],
+            "score": score
+        })
 
     best = max(
         scored,
-        key=lambda x: x[1]
+        key=lambda x: x["score"]
     )
 
-    return best[0]
+    return best

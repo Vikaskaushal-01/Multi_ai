@@ -1,5 +1,3 @@
-import asyncio
-
 from app.models.qwen_model import QwenModel
 from app.models.llama_model import LlamaModel
 from app.models.mistral_model import MistralModel
@@ -12,37 +10,57 @@ llama = LlamaModel()
 mistral = MistralModel()
 deepseek = DeepSeekModel()
 
-async def safe_generate(model, query):
+models = [
 
-    try:
+    ("Qwen", qwen),
+    ("Llama", llama),
+    ("Mistral", mistral),
+    ("DeepSeek", deepseek)
+]
 
-        return await asyncio.wait_for(
-            model.generate(query),
-            timeout=120
-        )
 
-    except Exception as e:
+def process_query(query):
 
-        return f"Error: {str(e)}"
+    responses = []
 
-async def process_query(query: str):
+    for model_name, model in models:
 
-    tasks = [
-        safe_generate(qwen, query),
-        safe_generate(llama, query),
-        safe_generate(mistral, query),
-        safe_generate(deepseek, query)
-    ]
+        try:
 
-    responses = await asyncio.gather(*tasks)
+            response = model.generate(query)
 
-    valid_responses = [
-        response for response in responses
-        if "Error" not in response
-    ]
+            responses.append({
+
+                "model": model_name,
+                "response": response
+            })
+
+        except Exception as e:
+
+            responses.append({
+
+                "model": model_name,
+                "response": f"Error: {str(e)}"
+            })
+
+    valid_responses = []
+
+    for response in responses:
+
+        if "Error" not in response["response"]:
+
+            valid_responses.append(response)
 
     if not valid_responses:
 
-        return "All models failed."
+        return (
+            "All AI models failed. "
+            "Check OpenRouter API key."
+        )
 
-    return get_best_response(valid_responses)
+    best = get_best_response(valid_responses)
+
+    return (
+        f"Best Model: {best['model']}\n\n"
+        f"{best['response']}"
+    )
