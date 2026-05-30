@@ -1,40 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AI Router</title>
+    <title>Multi AI Assistant</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
-<div class="home-container">
+<div class="landing-container">
 
-    <h1>Multi-Model AI Assistant</h1>
+    <h1>Multi AI Assistant</h1>
 
     <textarea
         id="prompt"
-        placeholder="Ask engineering questions..."
+        placeholder="Ask an engineering question..."
     ></textarea>
 
     <button onclick="startChat()">
-        Generate Response
+        Start Chat
     </button>
 
 </div>
 
 <script>
 
-function startChat() {
+function startChat(){
 
-    const prompt = document
-        .getElementById("prompt")
-        .value;
+    const prompt =
+        document.getElementById("prompt").value;
 
     localStorage.setItem(
-        "current_prompt",
+        "first_prompt",
         prompt
     );
 
-    window.location.href = "chat.html";
+    window.location.href =
+        "chat.html";
 }
 
 </script>

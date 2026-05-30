@@ -1,11 +1,19 @@
-from app.similarity import calculate_similarity
+from app.similarity import (
+    calculate_similarity
+)
 
 
-def get_best_response(prompt, responses):
+def evaluate(
+    prompt,
+    responses
+):
 
     response_texts = [
+
         item["response"]
+
         for item in responses
+
     ]
 
     similarities = calculate_similarity(
@@ -20,7 +28,7 @@ def get_best_response(prompt, responses):
         similarity_score = similarities[i]
 
         length_score = min(
-            len(item["response"]) / 200,
+            len(item["response"]) / 500,
             1
         )
 
@@ -30,9 +38,16 @@ def get_best_response(prompt, responses):
         )
 
         scored.append({
-            "model": item["model"],
-            "response": item["response"],
-            "score": round(total_score, 3)
+
+            "model":
+            item["model"],
+
+            "response":
+            item["response"],
+
+            "score":
+            round(total_score, 3)
+
         })
 
     best = max(

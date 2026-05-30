@@ -10,18 +10,21 @@ ENGINEERING_KEYWORDS = [
     "api",
     "machine learning",
     "deep learning",
-    "math",
+    "artificial intelligence",
     "ai",
-    "engineering",
-    "algorithm",
     "data structure",
-    "cloud",
+    "algorithm",
     "backend",
-    "frontend"
+    "frontend",
+    "cloud",
+    "devops",
+    "engineering",
+    "math",
+    "mathematics",
+    "computer science"
 ]
 
-def is_engineering_query(query: str):
-
+def is_engineering_query(query: str) -> bool:
     query = query.lower()
 
     return any(
