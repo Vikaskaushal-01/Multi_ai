@@ -1,55 +1,38 @@
-def score_response(response):
+from app.similarity import calculate_similarity
 
-    score = 0
 
-    response = response.lower()
+def get_best_response(prompt, responses):
 
-    if len(response) > 100:
-        score += 3
-
-    keywords = [
-
-        "python",
-        "example",
-        "function",
-        "class",
-        "algorithm",
-        "code"
+    response_texts = [
+        item["response"]
+        for item in responses
     ]
 
-    for keyword in keywords:
-
-        if keyword in response:
-            score += 1
-
-    bad_words = [
-        "error",
-        "failed"
-    ]
-
-    for word in bad_words:
-
-        if word in response:
-            score -= 5
-
-    return score
-
-
-def get_best_response(responses):
+    similarities = calculate_similarity(
+        prompt,
+        response_texts
+    )
 
     scored = []
 
-    for item in responses:
+    for i, item in enumerate(responses):
 
-        score = score_response(
-            item["response"]
+        similarity_score = similarities[i]
+
+        length_score = min(
+            len(item["response"]) / 200,
+            1
+        )
+
+        total_score = (
+            similarity_score * 0.7 +
+            length_score * 0.3
         )
 
         scored.append({
-
             "model": item["model"],
             "response": item["response"],
-            "score": score
+            "score": round(total_score, 3)
         })
 
     best = max(
@@ -57,4 +40,4 @@ def get_best_response(responses):
         key=lambda x: x["score"]
     )
 
-    return best
+    return best, scored

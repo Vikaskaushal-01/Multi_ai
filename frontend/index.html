@@ -1,35 +1,43 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>Engineering AI</title>
-
-    <link
-        rel="stylesheet"
-        href="styles.css"
-    >
+    <title>AI Router</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
 
-<div class="container">
+<div class="home-container">
 
-    <h1>Engineering AI Assistant</h1>
+    <h1>Multi-Model AI Assistant</h1>
 
     <textarea
-        id="question"
-        placeholder="Ask engineering question..."
+        id="prompt"
+        placeholder="Ask engineering questions..."
     ></textarea>
 
-    <button onclick="sendMessage()">
-        Send
+    <button onclick="startChat()">
+        Generate Response
     </button>
-
-    <div id="response"></div>
 
 </div>
 
-<script src="script.js"></script>
+<script>
+
+function startChat() {
+
+    const prompt = document
+        .getElementById("prompt")
+        .value;
+
+    localStorage.setItem(
+        "current_prompt",
+        prompt
+    );
+
+    window.location.href = "chat.html";
+}
+
+</script>
 
 </body>
 </html>

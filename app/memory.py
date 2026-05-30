@@ -1,5 +1,6 @@
 chat_memory = {}
 
+
 def save_message(session_id, role, message):
 
     if session_id not in chat_memory:
@@ -9,6 +10,7 @@ def save_message(session_id, role, message):
         "role": role,
         "message": message
     })
+
 
 def get_history(session_id):
 

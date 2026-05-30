@@ -1,10 +1,6 @@
 fastapi
 uvicorn
-aiohttp
+requests
 python-dotenv
-pydantic
-transformers
-torch
-accelerate
-sentencepiece
-safetensors
+scikit-learn
+numpy

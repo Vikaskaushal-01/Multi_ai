@@ -4,6 +4,7 @@ from app.models.mistral_model import MistralModel
 from app.models.deepseek_model import DeepSeekModel
 
 from app.evaluator import get_best_response
+from app.memory import get_history
 
 qwen = QwenModel()
 llama = LlamaModel()
@@ -11,7 +12,6 @@ mistral = MistralModel()
 deepseek = DeepSeekModel()
 
 models = [
-
     ("Qwen", qwen),
     ("Llama", llama),
     ("Mistral", mistral),
@@ -19,7 +19,9 @@ models = [
 ]
 
 
-def process_query(query):
+def process_query(query, session_id):
+
+    history = get_history(session_id)
 
     responses = []
 
@@ -27,10 +29,12 @@ def process_query(query):
 
         try:
 
-            response = model.generate(query)
+            response = model.generate(
+                query,
+                history
+            )
 
             responses.append({
-
                 "model": model_name,
                 "response": response
             })
@@ -38,29 +42,24 @@ def process_query(query):
         except Exception as e:
 
             responses.append({
-
                 "model": model_name,
                 "response": f"Error: {str(e)}"
             })
 
-    valid_responses = []
+    valid = []
 
-    for response in responses:
+    for item in responses:
 
-        if "Error" not in response["response"]:
+        if "Error" not in item["response"]:
+            valid.append(item)
 
-            valid_responses.append(response)
-
-    if not valid_responses:
-
-        return (
-            "All AI models failed. "
-            "Check OpenRouter API key."
-        )
-
-    best = get_best_response(valid_responses)
-
-    return (
-        f"Best Model: {best['model']}\n\n"
-        f"{best['response']}"
+    best, scored = get_best_response(
+        query,
+        valid
     )
+
+    return {
+        "best_model": best["model"],
+        "best_response": best["response"],
+        "scores": scored
+    }
