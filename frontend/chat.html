@@ -1,25 +1,38 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
     <title>Chat</title>
-    <link rel="stylesheet" href="styles.css">
+
+    <link rel="stylesheet"
+          href="styles.css">
+
 </head>
+
 <body>
 
-<div class="chat-layout">
+<div class="container">
 
     <div class="sidebar">
-        <h2>Chat History</h2>
-        <div id="history"></div>
+
+        <button id="newChatBtn">
+            + New Chat
+        </button>
+
+        <h3>History</h3>
+
+        <div id="chatList"></div>
+
     </div>
 
-    <div class="main-chat">
+    <div class="chat-section">
 
         <div id="messages"></div>
 
         <canvas id="graphCanvas"></canvas>
 
-        <div class="input-box">
+        <div class="input-section">
 
             <textarea
                 id="question"

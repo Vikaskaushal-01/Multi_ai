@@ -1,61 +1,191 @@
-const sessionId = "session_1";
+const API =
+    "http://127.0.0.1:8000";
+
+let currentChatId = null;
 
 window.onload = async () => {
 
-    const prompt = localStorage.getItem(
-        "current_prompt"
-    );
+    await createNewChat();
 
-    if (prompt) {
+    await loadChats();
+
+    const firstPrompt =
+        localStorage.getItem(
+            "first_prompt"
+        );
+
+    if(firstPrompt){
 
         document.getElementById(
             "question"
-        ).value = prompt;
-
-        await sendMessage();
+        ).value = firstPrompt;
 
         localStorage.removeItem(
-            "current_prompt"
+            "first_prompt"
         );
+
+        await sendMessage();
     }
 };
 
+document
+.getElementById("newChatBtn")
+.addEventListener(
+    "click",
+    createNewChat
+);
 
-async function sendMessage() {
+async function createNewChat(){
 
-    const question = document
-        .getElementById("question")
-        .value;
+    const response =
+        await fetch(
+            `${API}/new-chat`,
+            {
+                method:"POST"
+            }
+        );
 
-    const response = await fetch(
-        "http://127.0.0.1:8000/chat",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                session_id: sessionId,
-                query: question
-            })
-        }
-    );
+    const data =
+        await response.json();
 
-    const data = await response.json();
+    currentChatId =
+        data.chat_id;
 
-    const messages = document
-        .getElementById("messages");
+    document
+    .getElementById("messages")
+    .innerHTML = "";
+}
+
+async function loadChats(){
+
+    const response =
+        await fetch(
+            `${API}/chats`
+        );
+
+    const chats =
+        await response.json();
+
+    const chatList =
+        document.getElementById(
+            "chatList"
+        );
+
+    chatList.innerHTML = "";
+
+    chats.forEach(chat=>{
+
+        const div =
+            document.createElement(
+                "div"
+            );
+
+        div.className =
+            "chat-item";
+
+        div.innerText =
+            chat.title;
+
+        div.onclick = ()=>{
+
+            currentChatId =
+                chat.id;
+
+            loadHistory(chat);
+        };
+
+        chatList.appendChild(div);
+    });
+}
+
+function loadHistory(chat){
+
+    const messages =
+        document.getElementById(
+            "messages"
+        );
+
+    messages.innerHTML = "";
+
+    chat.messages.forEach(msg=>{
+
+        const div =
+            document.createElement(
+                "div"
+            );
+
+        div.className =
+            msg.role==="user"
+            ? "user-message"
+            : "bot-message";
+
+        div.innerText =
+            msg.content;
+
+        messages.appendChild(div);
+    });
+}
+
+async function sendMessage(){
+
+    const question =
+        document.getElementById(
+            "question"
+        ).value;
+
+    if(!question) return;
+
+    const response =
+        await fetch(
+            `${API}/chat`,
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                    "application/json"
+                },
+
+                body:JSON.stringify({
+
+                    chat_id:
+                    currentChatId,
+
+                    query:
+                    question
+                })
+            }
+        );
+
+    const data =
+        await response.json();
+
+    const messages =
+        document.getElementById(
+            "messages"
+        );
 
     messages.innerHTML += `
-        <div class="user-msg">
-            ${question}
-        </div>
 
-        <div class="bot-msg">
-            <strong>Best Model:</strong>
-            ${data.best_model}
-            <br><br>
-            ${data.response}
-        </div>
+    <div class="user-message">
+        ${question}
+    </div>
+
+    <div class="bot-message">
+        <b>${data.best_model}</b>
+        <br><br>
+        ${data.response}
+    </div>
     `;
+
+    renderGraph(
+        data.scores
+    );
+
+    document
+    .getElementById(
+        "question"
+    ).value = "";
+
+    await loadChats();
 }
