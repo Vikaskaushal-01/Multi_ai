@@ -14,22 +14,40 @@ from app.models.deepseek_model import (
     DeepSeekModel
 )
 
-from app.evaluator import evaluate
-
+from app.evaluator import (
+    evaluate_models
+)
 
 qwen = QwenModel()
+
 llama = LlamaModel()
+
 mistral = MistralModel()
+
 deepseek = DeepSeekModel()
 
 
 MODELS = [
 
-    ("Qwen", qwen),
-    ("Llama", llama),
-    ("Mistral", mistral),
-    ("DeepSeek", deepseek)
+    (
+        "Qwen",
+        qwen
+    ),
 
+    (
+        "Llama",
+        llama
+    ),
+
+    (
+        "Mistral",
+        mistral
+    ),
+
+    (
+        "DeepSeek",
+        deepseek
+    )
 ]
 
 
@@ -40,54 +58,43 @@ def process_query(
 
 ):
 
-    results = []
+    model_outputs = []
 
     for name, model in MODELS:
 
         try:
 
-            answer = model.generate(
+            response = model.generate(
+
                 prompt,
                 history
+
             )
 
-            results.append({
+            model_outputs.append({
 
-                "model":
-                name,
+                "model": name,
 
-                "response":
-                answer
+                "response": response
 
             })
 
         except Exception as e:
 
             print(
-                f"{name} error:",
+                f"{name}:",
                 e
             )
 
-    if not results:
+    if not model_outputs:
 
         raise Exception(
             "All models failed."
         )
 
-    best, scores = evaluate(
+    return evaluate_models(
+
         prompt,
-        results
+        model_outputs
+
     )
-
-    return {
-
-        "best_model":
-        best["model"],
-
-        "response":
-        best["response"],
-
-        "scores":
-        scores
-
-    }
