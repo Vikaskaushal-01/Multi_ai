@@ -5,18 +5,16 @@ let currentChatId = null;
 
 window.onload = async () => {
 
-    await createChat();
-
     await loadChats();
 
 };
 
 document
-.getElementById(
-    "newChatBtn"
-)
+.getElementById("newChatBtn")
 .addEventListener(
+
     "click",
+
     async ()=>{
 
         await createChat();
@@ -24,10 +22,15 @@ document
         document
         .getElementById(
             "messages"
-        )
-        .innerHTML = "";
+        ).innerHTML = "";
+
+        document
+        .getElementById(
+            "graphContainer"
+        ).innerHTML = "";
 
     }
+
 );
 
 async function createChat(){
@@ -48,6 +51,8 @@ async function createChat(){
 
     currentChatId =
         data.chat_id;
+
+    await loadChats();
 }
 
 async function loadChats(){
@@ -92,6 +97,20 @@ async function loadChats(){
         list.appendChild(div);
 
     });
+
+    if(
+        !currentChatId &&
+        chats.length > 0
+    ){
+
+        currentChatId =
+            chats[0].id;
+
+        loadHistory(
+            chats[0]
+        );
+
+    }
 }
 
 function loadHistory(chat){
@@ -116,7 +135,10 @@ function loadHistory(chat){
             : "bot-message";
 
         div.innerHTML =
-            msg.content;
+            msg.content.replace(
+                /\n/g,
+                "<br>"
+            );
 
         messages.appendChild(
             div
@@ -133,10 +155,16 @@ async function sendMessage(){
     const question =
         document.getElementById(
             "question"
-        ).value;
+        ).value.trim();
 
     if(!question)
         return;
+
+    if(!currentChatId){
+
+        await createChat();
+
+    }
 
     const messages =
         document.getElementById(
@@ -146,13 +174,20 @@ async function sendMessage(){
     messages.innerHTML += `
 
     <div class="user-message">
+
         ${question}
+
     </div>
 
     `;
 
     messages.scrollTop =
         messages.scrollHeight;
+
+    document
+    .getElementById(
+        "question"
+    ).value = "";
 
     const response =
         await fetch(
@@ -189,16 +224,21 @@ async function sendMessage(){
 
     <div class="bot-message">
 
-        <h2>
+        <h3>
+
         🏆 Best Model:
         ${data.best_model}
-        </h2>
+
+        </h3>
 
         <p>
 
         Confidence:
+
         <b>
+
         ${data.confidence}%
+
         </b>
 
         </p>
@@ -207,7 +247,7 @@ async function sendMessage(){
 
         <div>
 
-        ${data.response}
+        ${data.response.replace(/\n/g,"<br>")}
 
         </div>
 
@@ -215,14 +255,45 @@ async function sendMessage(){
 
     `;
 
-    renderGraph(
-        data.graph
-    );
+    let graphHtml = "";
+
+    data.graph.forEach(item=>{
+
+        graphHtml += `
+
+        <div class="score-row">
+
+            <div class="score-name">
+
+                ${item.model}
+
+            </div>
+
+            <div class="score-bar">
+
+                <div
+                    class="score-fill"
+                    style="width:${item.percentage}%">
+                </div>
+
+            </div>
+
+            <div>
+
+                ${item.percentage}%
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
 
     document
     .getElementById(
-        "question"
-    ).value = "";
+        "graphContainer"
+    ).innerHTML = graphHtml;
 
     messages.scrollTop =
         messages.scrollHeight;
