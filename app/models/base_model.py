@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-API_KEY = os.getenv(
+OPENROUTER_API_KEY = os.getenv(
     "OPENROUTER_API_KEY"
 )
 
@@ -46,6 +46,7 @@ class BaseModel:
         messages.append({
 
             "role": "user",
+
             "content": prompt
 
         })
@@ -57,7 +58,7 @@ class BaseModel:
             headers={
 
                 "Authorization":
-                f"Bearer {API_KEY}",
+                f"Bearer {OPENROUTER_API_KEY}",
 
                 "Content-Type":
                 "application/json"
@@ -70,18 +71,25 @@ class BaseModel:
                 self.model_name,
 
                 "messages":
-                messages
+                messages,
+
+                "temperature":
+                0.4
 
             },
 
-            timeout=60
+            timeout=120
 
         )
 
+        response.raise_for_status()
+
         data = response.json()
 
-        if "choices" not in data:
-
-            raise Exception(str(data))
-
-        return data["choices"][0]["message"]["content"]
+        return data[
+            "choices"
+        ][0][
+            "message"
+        ][
+            "content"
+        ]
