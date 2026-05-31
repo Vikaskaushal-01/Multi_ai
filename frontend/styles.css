@@ -197,23 +197,60 @@ textarea{
         flex-direction:column;
     }
 
-    .sidebar{
+   .sidebar{
 
-        width:100%;
+    width:280px;
 
-        height:220px;
-    }
+    min-width:280px;
+
+    background:#111827;
+
+    padding:20px;
+
+    overflow-y:auto;
+
+    border-right:1px solid #1e293b;
+}
 
     .main{
 
         height:calc(100vh - 220px);
     }
 
-    .user-message,
+    .user-message{
+
+    align-self:flex-end;
+
+    background:#2563eb;
+
+    padding:15px;
+
+    border-radius:15px;
+
+    max-width:70%;
+
+    overflow-wrap:break-word;
+}
     .bot-message{
 
-        max-width:100%;
-    }
+    align-self:flex-start;
+
+    background:#1e293b;
+
+    padding:20px;
+
+    border-radius:15px;
+
+    width:100%;
+
+    max-width:100%;
+
+    overflow-wrap:break-word;
+
+    line-height:1.7;
+
+    font-size:16px;
+}
 
     #graphCanvas{
 
