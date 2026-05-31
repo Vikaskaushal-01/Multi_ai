@@ -1,115 +1,82 @@
-function renderGraph(scores){
+function renderGraph(graph){
 
     const canvas =
-        document.getElementById(
-            "graphCanvas"
-        );
+    document.getElementById(
+        "graphCanvas"
+    );
 
     const ctx =
-        canvas.getContext("2d");
+    canvas.getContext("2d");
 
-    canvas.width = 700;
-    canvas.height = 400;
+    canvas.width =
+    canvas.parentElement
+    .clientWidth;
+
+    canvas.height = 300;
 
     ctx.clearRect(
+
         0,
         0,
         canvas.width,
         canvas.height
+
     );
 
-    const centerX = 350;
-    const centerY = 200;
+    const barWidth = 80;
 
-    ctx.beginPath();
+    const spacing = 120;
 
-    ctx.arc(
-        centerX,
-        centerY,
-        30,
-        0,
-        Math.PI*2
-    );
+    graph.forEach(
 
-    ctx.fillStyle =
-        "#2563eb";
-
-    ctx.fill();
-
-    ctx.fillStyle =
-        "white";
-
-    ctx.fillText(
-        "PROMPT",
-        centerX-20,
-        centerY+5
-    );
-
-    scores.forEach(
         (item,index)=>{
 
-        const angle =
-            (
-                index/
-                scores.length
-            )*
-            Math.PI*2;
-
-        const distance =
-            100 +
-            (
-                1-item.score
-            )*200;
-
         const x =
-            centerX +
-            Math.cos(angle)*
-            distance;
+        60 +
+        index*spacing;
+
+        const height =
+        item.percentage * 2;
 
         const y =
-            centerY +
-            Math.sin(angle)*
-            distance;
+        250-height;
 
-        ctx.beginPath();
+        ctx.fillStyle =
+        "#2563eb";
 
-        ctx.moveTo(
-            centerX,
-            centerY
-        );
+        ctx.fillRect(
 
-        ctx.lineTo(
-            x,
-            y
-        );
-
-        ctx.strokeStyle =
-            "white";
-
-        ctx.stroke();
-
-        ctx.beginPath();
-
-        ctx.arc(
             x,
             y,
-            20,
-            0,
-            Math.PI*2
+            barWidth,
+            height
+
         );
 
         ctx.fillStyle =
-            "#10b981";
-
-        ctx.fill();
-
-        ctx.fillStyle =
-            "white";
+        "white";
 
         ctx.fillText(
+
             item.model,
-            x-20,
-            y+35
+
+            x,
+
+            270
+
         );
+
+        ctx.fillText(
+
+            item.percentage
+            +"%",
+
+            x,
+
+            y-10
+
+        );
+
     });
+
 }
