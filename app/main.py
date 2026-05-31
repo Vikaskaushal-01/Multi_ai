@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from app.history_manager import update_chat_title
 from fastapi.middleware.cors import CORSMiddleware
 
 from pydantic import BaseModel

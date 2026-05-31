@@ -40,23 +40,35 @@ def save_chats(data):
         )
 
 
-def create_chat(title):
+def create_chat(title="New Chat"):
 
     data = load_chats()
 
     chat_id = str(uuid.uuid4())
 
     data["chats"].append({
-
         "id": chat_id,
         "title": title,
         "messages": []
-
     })
 
     save_chats(data)
 
     return chat_id
+
+def update_chat_title(chat_id, title):
+
+    data = load_chats()
+
+    for chat in data["chats"]:
+
+        if chat["id"] == chat_id:
+
+            if chat["title"] == "New Chat":
+
+                chat["title"] = title[:40]
+
+    save_chats(data)
 
 
 def get_chat(chat_id):
