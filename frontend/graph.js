@@ -1,82 +1,68 @@
-function renderGraph(graph){
+function renderGraph(graph) {
 
     const canvas =
-    document.getElementById(
-        "graphCanvas"
-    );
+        document.getElementById(
+            "graphCanvas"
+        );
 
     const ctx =
-    canvas.getContext("2d");
+        canvas.getContext("2d");
 
     canvas.width =
-    canvas.parentElement
-    .clientWidth;
+        canvas.parentElement.clientWidth - 40;
 
-    canvas.height = 300;
+    canvas.height = 350;
 
     ctx.clearRect(
-
         0,
         0,
         canvas.width,
         canvas.height
-
     );
 
-    const barWidth = 80;
+    ctx.fillStyle = "white";
+    ctx.font = "18px Arial";
 
-    const spacing = 120;
+    ctx.fillText(
+        "Model Comparison",
+        20,
+        30
+    );
 
     graph.forEach(
+        (item, index) => {
 
-        (item,index)=>{
+            const y =
+                70 +
+                index * 70;
 
-        const x =
-        60 +
-        index*spacing;
+            const barWidth =
+                item.percentage * 5;
 
-        const height =
-        item.percentage * 2;
+            ctx.fillStyle =
+                "#2563eb";
 
-        const y =
-        250-height;
+            ctx.fillRect(
+                150,
+                y,
+                barWidth,
+                35
+            );
 
-        ctx.fillStyle =
-        "#2563eb";
+            ctx.fillStyle =
+                "white";
 
-        ctx.fillRect(
+            ctx.fillText(
+                item.model,
+                20,
+                y + 23
+            );
 
-            x,
-            y,
-            barWidth,
-            height
-
-        );
-
-        ctx.fillStyle =
-        "white";
-
-        ctx.fillText(
-
-            item.model,
-
-            x,
-
-            270
-
-        );
-
-        ctx.fillText(
-
-            item.percentage
-            +"%",
-
-            x,
-
-            y-10
-
-        );
-
-    });
-
+            ctx.fillText(
+                item.percentage + "%",
+                160 + barWidth,
+                y + 23
+            );
+        }
+    );
 }
