@@ -102,12 +102,28 @@ def update_chat_title(
 
 
 def save_message(
-
     chat_id,
     role,
     content
-
 ):
+
+    data = load_data()
+
+    for chat in data["chats"]:
+
+        if chat["id"] == chat_id:
+
+            chat["messages"].append({
+
+                "role": role,
+
+                "content": content
+
+            })
+
+            break
+
+    save_data(data)
 
     data = load_data()
 
