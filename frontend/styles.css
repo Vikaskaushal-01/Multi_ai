@@ -4,25 +4,36 @@
 
 html,
 body{
+
     margin:0;
     padding:0;
+
     width:100%;
     height:100%;
-    overflow-x:hidden;
-    font-family:Arial, sans-serif;
+
+    overflow:hidden;
+
+    font-family:Arial;
+
     background:#0f172a;
+
     color:white;
 }
 
 .container{
+
     display:flex;
+
     width:100%;
+
     height:100vh;
 }
 
 .sidebar{
 
     width:280px;
+
+    min-width:280px;
 
     background:#111827;
 
@@ -41,9 +52,9 @@ body{
 
     flex-direction:column;
 
-    overflow:hidden;
-
     padding:20px;
+
+    overflow:hidden;
 }
 
 #messages{
@@ -52,15 +63,11 @@ body{
 
     overflow-y:auto;
 
-    overflow-x:hidden;
-
     display:flex;
 
     flex-direction:column;
 
     gap:15px;
-
-    width:100%;
 }
 
 .user-message{
@@ -69,36 +76,61 @@ body{
 
     background:#2563eb;
 
-    color:white;
-
     padding:15px;
 
     border-radius:15px;
 
-    max-width:80%;
-
-    word-wrap:break-word;
+    max-width:70%;
 }
 
 .bot-message{
 
-    align-self:flex-start;
+    width:100%;
 
     background:#1e293b;
-
-    color:white;
 
     padding:20px;
 
     border-radius:15px;
 
+    line-height:1.7;
+}
+
+.input-box{
+
+    margin-top:20px;
+}
+
+textarea{
+
     width:100%;
 
-    max-width:100%;
+    height:90px;
 
-    word-wrap:break-word;
+    padding:15px;
 
-    line-height:1.7;
+    border:none;
+
+    border-radius:10px;
+
+    resize:none;
+}
+
+button{
+
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#2563eb;
+
+    color:white;
+
+    cursor:pointer;
 }
 
 .chat-item{
@@ -118,8 +150,6 @@ body{
     overflow:hidden;
 
     text-overflow:ellipsis;
-
-    width:100%;
 }
 
 .chat-item:hover{
@@ -127,67 +157,47 @@ body{
     background:#334155;
 }
 
-button{
+#graphContainer{
+
+    margin-top:20px;
 
     width:100%;
+}
 
-    padding:14px;
+.score-row{
 
-    border:none;
+    display:flex;
 
-    border-radius:10px;
+    align-items:center;
 
-    cursor:pointer;
+    gap:15px;
+
+    margin-bottom:12px;
+}
+
+.score-name{
+
+    width:100px;
+}
+
+.score-bar{
+
+    flex:1;
+
+    height:18px;
+
+    background:#334155;
+
+    border-radius:20px;
+
+    overflow:hidden;
+}
+
+.score-fill{
+
+    height:100%;
 
     background:#2563eb;
-
-    color:white;
-
-    font-size:16px;
-}
-
-.input-box{
-
-    margin-top:20px;
-}
-
-textarea{
-
-    width:100%;
-
-    height:90px;
-
-    resize:none;
-
-    border:none;
-
-    border-radius:10px;
-
-    padding:15px;
-
-    font-size:16px;
-}
-
-.graph-section{
-
-    margin-top:20px;
-
-    padding:20px;
-
-    background:#111827;
-
-    border-radius:10px;
-
-    width:100%;
-}
-
-#graphCanvas{
-
-    width:100%;
-
-    height:350px;
-
-    display:block;
 }
 
 @media(max-width:900px){
@@ -197,63 +207,17 @@ textarea{
         flex-direction:column;
     }
 
-   .sidebar{
+    .sidebar{
 
-    width:280px;
+        width:100%;
 
-    min-width:280px;
+        min-width:100%;
 
-    background:#111827;
-
-    padding:20px;
-
-    overflow-y:auto;
-
-    border-right:1px solid #1e293b;
-}
-
-    .main{
-
-        height:calc(100vh - 220px);
+        height:220px;
     }
 
     .user-message{
 
-    align-self:flex-end;
-
-    background:#2563eb;
-
-    padding:15px;
-
-    border-radius:15px;
-
-    max-width:70%;
-
-    overflow-wrap:break-word;
-}
-    .bot-message{
-
-    align-self:flex-start;
-
-    background:#1e293b;
-
-    padding:20px;
-
-    border-radius:15px;
-
-    width:100%;
-
-    max-width:100%;
-
-    overflow-wrap:break-word;
-
-    line-height:1.7;
-
-    font-size:16px;
-}
-
-    #graphCanvas{
-
-        height:300px;
+        max-width:90%;
     }
 }
