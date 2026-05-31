@@ -3,7 +3,7 @@
 
 <head>
 
-    <title>Multi AI Assistant</title>
+    <title>Multi AI Decision Engine</title>
 
     <link rel="stylesheet"
           href="styles.css">
@@ -12,40 +12,48 @@
 
 <body>
 
-<div class="landing">
+<div class="container">
 
-    <h1>Multi AI Decision Engine</h1>
+    <aside class="sidebar">
 
-    <p>
-        Engineering Focused AI Assistant
-    </p>
+        <button id="newChatBtn">
 
-    <button id="startBtn">
+            + New Chat
 
-        Start New Chat
+        </button>
 
-    </button>
+        <h2>History</h2>
+
+        <div id="chatList"></div>
+
+    </aside>
+
+    <main class="main">
+
+        <div id="messages"></div>
+
+        <div id="graphContainer"></div>
+
+        <div class="input-box">
+
+            <textarea
+                id="question"
+                placeholder="Ask an engineering question..."
+            ></textarea>
+
+            <button onclick="sendMessage()">
+
+                Send
+
+            </button>
+
+        </div>
+
+    </main>
 
 </div>
 
-<script>
-
-document
-.getElementById("startBtn")
-.addEventListener(
-
-    "click",
-
-    ()=>{
-
-        window.location.href =
-        "chat.html";
-
-    }
-
-);
-
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
