@@ -3,56 +3,174 @@ from app.similarity import (
 )
 
 
-def evaluate(
+def score_response(
+
     prompt,
-    responses
+    response
+
 ):
 
-    response_texts = [
+    score = 0
 
-        item["response"]
+    response_lower = response.lower()
 
-        for item in responses
+    # Similarity
+
+    similarity = calculate_similarity(
+
+        prompt,
+        [response]
+
+    )[0]
+
+    score += similarity * 60
+
+    # Length Quality
+
+    words = len(response.split())
+
+    if words > 50:
+        score += 20
+
+    elif words > 25:
+        score += 10
+
+    # Technical Quality
+
+    technical_keywords = [
+
+        "algorithm",
+        "function",
+        "class",
+        "example",
+        "python",
+        "database",
+        "api",
+        "model",
+        "machine learning"
 
     ]
 
-    similarities = calculate_similarity(
-        prompt,
-        response_texts
-    )
+    for keyword in technical_keywords:
 
-    scored = []
+        if keyword in response_lower:
 
-    for i, item in enumerate(responses):
+            score += 2
 
-        similarity_score = similarities[i]
+    # Penalties
 
-        length_score = min(
-            len(item["response"]) / 500,
-            1
+    bad_words = [
+
+        "error",
+        "failed",
+        "cannot",
+        "unavailable"
+
+    ]
+
+    for word in bad_words:
+
+        if word in response_lower:
+
+            score -= 10
+
+    return round(score, 2)
+
+
+def evaluate_models(
+
+    prompt,
+    model_outputs
+
+):
+
+    results = []
+
+    for item in model_outputs:
+
+        model_name = item["model"]
+
+        response = item["response"]
+
+        score = score_response(
+
+            prompt,
+            response
+
         )
 
-        total_score = (
-            similarity_score * 0.7 +
-            length_score * 0.3
-        )
+        results.append({
 
-        scored.append({
+            "model": model_name,
 
-            "model":
-            item["model"],
+            "response": response,
 
-            "response":
-            item["response"],
-
-            "score":
-            round(total_score, 3)
+            "score": score
 
         })
 
     best = max(
-        scored,
+
+        results,
+
         key=lambda x: x["score"]
+
     )
 
-    return best, scored
+    total = sum(
+
+        item["score"]
+
+        for item in results
+
+    )
+
+    graph_data = []
+
+    for item in results:
+
+        percentage = round(
+
+            (
+                item["score"] /
+                total
+            ) * 100,
+
+            2
+
+        )
+
+        graph_data.append({
+
+            "model":
+            item["model"],
+
+            "percentage":
+            percentage
+
+        })
+
+    return {
+
+        "best_model":
+        best["model"],
+
+        "best_response":
+        best["response"],
+
+        "confidence":
+        round(
+
+            (
+                best["score"] /
+                total
+            ) * 100,
+
+            2
+
+        ),
+
+        "graph":
+        graph_data
+
+    }
