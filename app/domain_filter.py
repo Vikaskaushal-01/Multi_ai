@@ -1,33 +1,47 @@
 ENGINEERING_KEYWORDS = [
+
     "python",
     "java",
+    "c++",
     "javascript",
     "react",
     "node",
-    "docker",
     "sql",
     "mongodb",
-    "api",
+    "docker",
+    "kubernetes",
+
+    "ai",
+    "artificial intelligence",
     "machine learning",
     "deep learning",
-    "artificial intelligence",
-    "ai",
+
     "data structure",
     "algorithm",
+
     "backend",
     "frontend",
+    "api",
+    "database",
+
     "cloud",
     "devops",
-    "engineering",
+
     "math",
     "mathematics",
+    "engineering",
+
     "computer science"
 ]
 
-def is_engineering_query(query: str) -> bool:
+
+def is_engineering_query(query):
+
     query = query.lower()
 
     return any(
+
         keyword in query
+
         for keyword in ENGINEERING_KEYWORDS
     )
