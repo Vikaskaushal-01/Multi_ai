@@ -4,108 +4,63 @@ from app.similarity import (
 
 
 def score_response(
-
     prompt,
     response
-
 ):
 
-    score = 0
-
-    response_lower = response.lower()
-
-    # Similarity
-
     similarity = calculate_similarity(
-
         prompt,
         [response]
-
     )[0]
 
-    score += similarity * 60
+    word_count = len(
+        response.split()
+    )
 
-    # Length Quality
+    length_score = min(
+        word_count / 100,
+        1
+    )
 
-    words = len(response.split())
+    score = (
+        similarity * 70
+        +
+        length_score * 30
+    )
 
-    if words > 50:
-        score += 20
-
-    elif words > 25:
-        score += 10
-
-    # Technical Quality
-
-    technical_keywords = [
-
-        "algorithm",
-        "function",
-        "class",
-        "example",
-        "python",
-        "database",
-        "api",
-        "model",
-        "machine learning"
-
-    ]
-
-    for keyword in technical_keywords:
-
-        if keyword in response_lower:
-
-            score += 2
-
-    # Penalties
-
-    bad_words = [
-
-        "error",
-        "failed",
-        "cannot",
-        "unavailable"
-
-    ]
-
-    for word in bad_words:
-
-        if word in response_lower:
-
-            score -= 10
-
-    return round(score, 2)
+    return round(
+        score,
+        2
+    )
 
 
 def evaluate_models(
-
     prompt,
     model_outputs
-
 ):
 
     results = []
 
     for item in model_outputs:
 
-        model_name = item["model"]
-
-        response = item["response"]
-
         score = score_response(
 
             prompt,
-            response
+
+            item["response"]
 
         )
 
         results.append({
 
-            "model": model_name,
+            "model":
+            item["model"],
 
-            "response": response,
+            "response":
+            item["response"],
 
-            "score": score
+            "score":
+            score
 
         })
 
@@ -113,7 +68,8 @@ def evaluate_models(
 
         results,
 
-        key=lambda x: x["score"]
+        key=lambda x:
+        x["score"]
 
     )
 
@@ -132,7 +88,8 @@ def evaluate_models(
         percentage = round(
 
             (
-                item["score"] /
+                item["score"]
+                /
                 total
             ) * 100,
 
@@ -146,7 +103,10 @@ def evaluate_models(
             item["model"],
 
             "percentage":
-            percentage
+            percentage,
+
+            "score":
+            item["score"]
 
         })
 
@@ -162,7 +122,8 @@ def evaluate_models(
         round(
 
             (
-                best["score"] /
+                best["score"]
+                /
                 total
             ) * 100,
 
