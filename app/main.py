@@ -1,22 +1,31 @@
 from fastapi import FastAPI
-from app.history_manager import update_chat_title
-from fastapi.middleware.cors import CORSMiddleware
+
+from fastapi.middleware.cors import (
+    CORSMiddleware
+)
 
 from pydantic import BaseModel
 
-from app.router import process_query
-
-from app.history_manager import (
-    create_chat,
-    save_message,
-    get_history,
-    get_all_chats
+from app.router import (
+    process_query
 )
-
-
 
 from app.domain_filter import (
     is_engineering_query
+)
+
+from app.history_manager import (
+
+    create_chat,
+
+    update_chat_title,
+
+    save_message,
+
+    get_history,
+
+    get_all_chats
+
 )
 
 app = FastAPI()
@@ -26,15 +35,24 @@ app.add_middleware(
     CORSMiddleware,
 
     allow_origins=["*"],
+
+    allow_credentials=True,
+
     allow_methods=["*"],
+
     allow_headers=["*"]
 
 )
 
 
-class ChatRequest(BaseModel):
+class ChatRequest(
+
+    BaseModel
+
+):
 
     chat_id: str
+
     query: str
 
 
@@ -49,9 +67,7 @@ def chats():
 
 def new_chat():
 
-    chat_id = create_chat(
-        "New Chat"
-    )
+    chat_id = create_chat()
 
     return {
 
@@ -63,10 +79,17 @@ def new_chat():
 
 @app.post("/chat")
 
-def chat(req: ChatRequest):
+def chat(
+
+    request:
+    ChatRequest
+
+):
 
     if not is_engineering_query(
-        req.query
+
+        request.query
+
     ):
 
         return {
@@ -77,22 +100,32 @@ def chat(req: ChatRequest):
         }
 
     history = get_history(
-        req.chat_id
+
+        request.chat_id
+
+    )
+
+    update_chat_title(
+
+        request.chat_id,
+
+        request.query
+
     )
 
     save_message(
 
-        req.chat_id,
+        request.chat_id,
 
         "user",
 
-        req.query
+        request.query
 
     )
 
     result = process_query(
 
-        req.query,
+        request.query,
 
         history
 
@@ -100,12 +133,26 @@ def chat(req: ChatRequest):
 
     save_message(
 
-        req.chat_id,
+        request.chat_id,
 
         "assistant",
 
-        result["response"]
+        result["best_response"]
 
     )
 
-    return result
+    return {
+
+        "best_model":
+        result["best_model"],
+
+        "confidence":
+        result["confidence"],
+
+        "response":
+        result["best_response"],
+
+        "graph":
+        result["graph"]
+
+    }
