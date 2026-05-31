@@ -14,38 +14,61 @@
 
 <div class="container">
 
-    <div class="sidebar">
+    <aside class="sidebar">
 
         <button id="newChatBtn">
+
             + New Chat
+
         </button>
 
-        <h3>History</h3>
+        <h3>
 
-        <div id="chatList"></div>
+            Chat History
 
-    </div>
+        </h3>
 
-    <div class="chat-section">
+        <div id="chatList">
 
-        <div id="messages"></div>
+        </div>
 
-        <canvas id="graphCanvas"></canvas>
+    </aside>
 
-        <div class="input-section">
+    <main class="main">
+
+        <div id="messages">
+
+        </div>
+
+        <div class="graph-section">
+
+            <h3>
+                Model Confidence
+            </h3>
+
+            <canvas
+                id="graphCanvas">
+            </canvas>
+
+        </div>
+
+        <div class="input-box">
 
             <textarea
                 id="question"
-                placeholder="Continue conversation..."
+                placeholder="Ask an engineering question..."
             ></textarea>
 
-            <button onclick="sendMessage()">
+            <button
+                onclick="sendMessage()">
+
                 Send
+
             </button>
 
         </div>
 
-    </div>
+    </main>
 
 </div>
 
