@@ -112,6 +112,14 @@ body{
     background:#1e293b;
 
     cursor:pointer;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    width:100%;
 }
 
 .chat-item:hover{
