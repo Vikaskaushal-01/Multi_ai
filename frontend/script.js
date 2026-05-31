@@ -1,5 +1,5 @@
 const API =
-"http://127.0.0.1:8000";
+    "http://127.0.0.1:8000";
 
 let currentChatId = null;
 
@@ -12,81 +12,81 @@ window.onload = async () => {
 };
 
 document
-.getElementById("newChatBtn")
+.getElementById(
+    "newChatBtn"
+)
 .addEventListener(
-
     "click",
-
     async ()=>{
 
         await createChat();
 
         document
-        .getElementById("messages")
+        .getElementById(
+            "messages"
+        )
         .innerHTML = "";
 
     }
-
 );
 
 async function createChat(){
 
     const response =
-    await fetch(
+        await fetch(
 
-        `${API}/new-chat`,
+            `${API}/new-chat`,
 
-        {
-            method:"POST"
-        }
+            {
+                method:"POST"
+            }
 
-    );
+        );
 
     const data =
-    await response.json();
+        await response.json();
 
     currentChatId =
-    data.chat_id;
+        data.chat_id;
 }
 
 async function loadChats(){
 
     const response =
-    await fetch(
-
-        `${API}/chats`
-
-    );
+        await fetch(
+            `${API}/chats`
+        );
 
     const chats =
-    await response.json();
+        await response.json();
 
     const list =
-    document.getElementById(
-        "chatList"
-    );
+        document.getElementById(
+            "chatList"
+        );
 
     list.innerHTML = "";
 
     chats.forEach(chat=>{
 
         const div =
-        document.createElement(
-            "div"
-        );
+            document.createElement(
+                "div"
+            );
 
         div.className =
-        "chat-item";
+            "chat-item";
 
         div.innerText =
-        chat.title;
+            chat.title;
 
         div.onclick = ()=>{
 
             currentChatId =
-            chat.id;
+                chat.id;
 
             loadHistory(chat);
+
         };
 
         list.appendChild(div);
@@ -97,26 +97,26 @@ async function loadChats(){
 function loadHistory(chat){
 
     const messages =
-    document.getElementById(
-        "messages"
-    );
+        document.getElementById(
+            "messages"
+        );
 
     messages.innerHTML = "";
 
     chat.messages.forEach(msg=>{
 
         const div =
-        document.createElement(
-            "div"
-        );
+            document.createElement(
+                "div"
+            );
 
         div.className =
-        msg.role === "user"
-        ? "user-message"
-        : "bot-message";
+            msg.role === "user"
+            ? "user-message"
+            : "bot-message";
 
-        div.innerText =
-        msg.content;
+        div.innerHTML =
+            msg.content;
 
         messages.appendChild(
             div
@@ -125,77 +125,91 @@ function loadHistory(chat){
     });
 
     messages.scrollTop =
-    messages.scrollHeight;
+        messages.scrollHeight;
 }
 
 async function sendMessage(){
 
     const question =
-    document.getElementById(
-        "question"
-    ).value;
+        document.getElementById(
+            "question"
+        ).value;
 
-    if(!question) return;
-
-    const response =
-    await fetch(
-
-        `${API}/chat`,
-
-        {
-
-            method:"POST",
-
-            headers:{
-                "Content-Type":
-                "application/json"
-            },
-
-            body:JSON.stringify({
-
-                chat_id:
-                currentChatId,
-
-                query:
-                question
-
-            })
-
-        }
-
-    );
-
-    const data =
-    await response.json();
+    if(!question)
+        return;
 
     const messages =
-    document.getElementById(
-        "messages"
-    );
+        document.getElementById(
+            "messages"
+        );
 
     messages.innerHTML += `
 
     <div class="user-message">
-
         ${question}
-
     </div>
+
+    `;
+
+    messages.scrollTop =
+        messages.scrollHeight;
+
+    const response =
+        await fetch(
+
+            `${API}/chat`,
+
+            {
+
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                    "application/json"
+                },
+
+                body:JSON.stringify({
+
+                    chat_id:
+                    currentChatId,
+
+                    query:
+                    question
+
+                })
+
+            }
+
+        );
+
+    const data =
+        await response.json();
+
+    messages.innerHTML += `
 
     <div class="bot-message">
 
-        <b>
-        Best Model:
+        <h2>
+        🏆 Best Model:
         ${data.best_model}
-        </b>
+        </h2>
 
-        <br><br>
+        <p>
 
         Confidence:
+        <b>
         ${data.confidence}%
+        </b>
 
-        <br><br>
+        </p>
+
+        <hr>
+
+        <div>
 
         ${data.response}
+
+        </div>
 
     </div>
 
@@ -211,7 +225,7 @@ async function sendMessage(){
     ).value = "";
 
     messages.scrollTop =
-    messages.scrollHeight;
+        messages.scrollHeight;
 
     await loadChats();
 }
