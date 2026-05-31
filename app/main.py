@@ -133,13 +133,27 @@ def chat(
 
     save_message(
 
-        request.chat_id,
+    request.chat_id,
 
-        "assistant",
+    "assistant",
 
-        result["best_response"]
+    {
 
-    )
+        "response":
+        result["best_response"],
+
+        "best_model":
+        result["best_model"],
+
+        "confidence":
+        result["confidence"],
+
+        "graph":
+        result["graph"]
+
+    }
+
+)
 
     return {
 
