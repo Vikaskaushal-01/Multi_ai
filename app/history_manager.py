@@ -1,37 +1,51 @@
 import json
-import os
 import uuid
+import os
 
 DATA_FILE = "data/chats.json"
 
 
-def _ensure_file():
+def ensure_file():
 
-    os.makedirs("data", exist_ok=True)
+    os.makedirs(
+        "data",
+        exist_ok=True
+    )
 
     if not os.path.exists(DATA_FILE):
 
-        with open(DATA_FILE, "w") as f:
+        with open(
+            DATA_FILE,
+            "w"
+        ) as f:
 
             json.dump(
-                {"chats": []},
+                {
+                    "chats": []
+                },
                 f,
                 indent=4
             )
 
 
-def load_chats():
+def load_data():
 
-    _ensure_file()
+    ensure_file()
 
-    with open(DATA_FILE, "r") as f:
+    with open(
+        DATA_FILE,
+        "r"
+    ) as f:
 
         return json.load(f)
 
 
-def save_chats(data):
+def save_data(data):
 
-    with open(DATA_FILE, "w") as f:
+    with open(
+        DATA_FILE,
+        "w"
+    ) as f:
 
         json.dump(
             data,
@@ -40,25 +54,41 @@ def save_chats(data):
         )
 
 
-def create_chat(title="New Chat"):
+def create_chat():
 
-    data = load_chats()
+    data = load_data()
 
-    chat_id = str(uuid.uuid4())
+    chat_id = str(
+        uuid.uuid4()
+    )
 
-    data["chats"].append({
+    chat = {
+
         "id": chat_id,
-        "title": title,
-        "messages": []
-    })
 
-    save_chats(data)
+        "title": "New Chat",
+
+        "messages": []
+
+    }
+
+    data["chats"].append(
+        chat
+    )
+
+    save_data(data)
 
     return chat_id
 
-def update_chat_title(chat_id, title):
 
-    data = load_chats()
+def update_chat_title(
+
+    chat_id,
+    title
+
+):
+
+    data = load_data()
 
     for chat in data["chats"]:
 
@@ -66,27 +96,20 @@ def update_chat_title(chat_id, title):
 
             if chat["title"] == "New Chat":
 
-                chat["title"] = title[:40]
+                chat["title"] = title[:50]
 
-    save_chats(data)
-
-
-def get_chat(chat_id):
-
-    data = load_chats()
-
-    for chat in data["chats"]:
-
-        if chat["id"] == chat_id:
-
-            return chat
-
-    return None
+    save_data(data)
 
 
-def save_message(chat_id, role, content):
+def save_message(
 
-    data = load_chats()
+    chat_id,
+    role,
+    content
+
+):
+
+    data = load_data()
 
     for chat in data["chats"]:
 
@@ -95,26 +118,29 @@ def save_message(chat_id, role, content):
             chat["messages"].append({
 
                 "role": role,
+
                 "content": content
 
             })
 
-            break
-
-    save_chats(data)
+    save_data(data)
 
 
 def get_history(chat_id):
 
-    chat = get_chat(chat_id)
+    data = load_data()
 
-    if not chat:
+    for chat in data["chats"]:
 
-        return []
+        if chat["id"] == chat_id:
 
-    return chat["messages"]
+            return chat["messages"]
+
+    return []
 
 
 def get_all_chats():
 
-    return load_chats()["chats"]
+    data = load_data()
+
+    return data["chats"]
