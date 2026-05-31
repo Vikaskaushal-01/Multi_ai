@@ -134,20 +134,111 @@ function loadHistory(chat){
             ? "user-message"
             : "bot-message";
 
-        div.innerHTML =
-            msg.content.replace(
+        if(
+            msg.role === "assistant"
+            &&
+            typeof msg.content === "object"
+        ){
+
+            div.innerHTML = `
+
+            <h3>
+
+            🏆 Best Model:
+            ${msg.content.best_model}
+
+            </h3>
+
+            <p>
+
+            Confidence:
+            <b>
+            ${msg.content.confidence}%
+            </b>
+
+            </p>
+
+            <hr>
+
+            ${msg.content.response.replace(
                 /\n/g,
                 "<br>"
+            )}
+
+            `;
+
+            renderHistoryGraph(
+                msg.content.graph
             );
 
-        messages.appendChild(
-            div
-        );
+        }
+        else{
+
+            div.innerHTML =
+
+            typeof msg.content === "string"
+
+            ? msg.content.replace(
+                /\n/g,
+                "<br>"
+            )
+
+            : "";
+
+        }
+
+        messages.appendChild(div);
 
     });
 
     messages.scrollTop =
         messages.scrollHeight;
+}
+
+function renderHistoryGraph(graph){
+
+    let html = "";
+
+    graph.forEach(item=>{
+
+        html += `
+
+        <div class="score-row">
+
+            <div class="score-name">
+
+                ${item.model}
+
+            </div>
+
+            <div class="score-bar">
+
+                <div
+
+                class="score-fill"
+
+                style="width:${item.percentage}%">
+
+                </div>
+
+            </div>
+
+            <div>
+
+                ${item.percentage}%
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+    document
+    .getElementById(
+        "graphContainer"
+    ).innerHTML = html;
 }
 
 async function sendMessage(){
