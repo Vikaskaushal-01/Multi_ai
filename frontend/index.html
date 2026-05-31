@@ -1,42 +1,49 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
     <title>Multi AI Assistant</title>
-    <link rel="stylesheet" href="styles.css">
+
+    <link rel="stylesheet"
+          href="styles.css">
+
 </head>
 
 <body>
 
-<div class="landing-container">
+<div class="landing">
 
-    <h1>Multi AI Assistant</h1>
+    <h1>Multi AI Decision Engine</h1>
 
-    <textarea
-        id="prompt"
-        placeholder="Ask an engineering question..."
-    ></textarea>
+    <p>
+        Engineering Focused AI Assistant
+    </p>
 
-    <button onclick="startChat()">
-        Start Chat
+    <button id="startBtn">
+
+        Start New Chat
+
     </button>
 
 </div>
 
 <script>
 
-function startChat(){
+document
+.getElementById("startBtn")
+.addEventListener(
 
-    const prompt =
-        document.getElementById("prompt").value;
+    "click",
 
-    localStorage.setItem(
-        "first_prompt",
-        prompt
-    );
+    ()=>{
 
-    window.location.href =
+        window.location.href =
         "chat.html";
-}
+
+    }
+
+);
 
 </script>
 
