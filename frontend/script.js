@@ -120,7 +120,15 @@ function loadHistory(chat){
             "messages"
         );
 
+    const graphContainer =
+        document.getElementById(
+            "graphContainer"
+        );
+
     messages.innerHTML = "";
+    graphContainer.innerHTML = "";
+
+    let latestGraph = null;
 
     chat.messages.forEach(msg=>{
 
@@ -129,79 +137,100 @@ function loadHistory(chat){
                 "div"
             );
 
-        div.className =
-            msg.role === "user"
-            ? "user-message"
-            : "bot-message";
+        if(msg.role === "user"){
 
-        if(
-            msg.role === "assistant"
-            &&
-            typeof msg.content === "object"
-        ){
-
-            div.innerHTML = `
-
-            <h3>
-
-            🏆 Best Model:
-            ${msg.content.best_model}
-
-            </h3>
-
-            <p>
-
-            Confidence:
-            <b>
-            ${msg.content.confidence}%
-            </b>
-
-            </p>
-
-            <hr>
-
-            ${msg.content.response.replace(
-                /\n/g,
-                "<br>"
-            )}
-
-            `;
-
-            renderHistoryGraph(
-                msg.content.graph
-            );
-
-        }
-        else{
+            div.className =
+                "user-message";
 
             div.innerHTML =
-
-            typeof msg.content === "string"
-
-            ? msg.content.replace(
-                /\n/g,
-                "<br>"
-            )
-
-            : "";
+                msg.content;
 
         }
 
-        messages.appendChild(div);
+        else{
+
+            div.className =
+                "bot-message";
+
+            if(
+                typeof msg.content === "object"
+            ){
+
+                div.innerHTML = `
+
+                <h3>
+                🏆 Best Model:
+                ${msg.content.best_model}
+                </h3>
+
+                <p>
+                Confidence:
+                <b>
+                ${msg.content.confidence}%
+                </b>
+                </p>
+
+                <hr>
+
+                <div>
+                ${msg.content.response.replace(
+                    /\n/g,
+                    "<br>"
+                )}
+                </div>
+
+                `;
+
+                latestGraph =
+                    msg.content.graph;
+
+            }
+            else{
+
+                div.innerHTML =
+                    msg.content;
+            }
+        }
+
+        messages.appendChild(
+            div
+        );
 
     });
+
+    if(latestGraph){
+
+        renderGraph(
+            latestGraph
+        );
+
+    }
 
     messages.scrollTop =
         messages.scrollHeight;
 }
 
-function renderHistoryGraph(graph){
+function renderGraph(graph){
 
-    let html = "";
+    const container =
+        document.getElementById(
+            "graphContainer"
+        );
+
+    container.innerHTML = `
+
+    <h2>
+    Model Confidence
+    </h2>
+
+    `;
+
+    if(!graph)
+        return;
 
     graph.forEach(item=>{
 
-        html += `
+        container.innerHTML += `
 
         <div class="score-row">
 
@@ -214,11 +243,8 @@ function renderHistoryGraph(graph){
             <div class="score-bar">
 
                 <div
-
-                class="score-fill"
-
-                style="width:${item.percentage}%">
-
+                    class="score-fill"
+                    style="width:${item.percentage}%">
                 </div>
 
             </div>
@@ -232,13 +258,7 @@ function renderHistoryGraph(graph){
         </div>
 
         `;
-
     });
-
-    document
-    .getElementById(
-        "graphContainer"
-    ).innerHTML = html;
 }
 
 async function sendMessage(){
@@ -346,45 +366,13 @@ async function sendMessage(){
 
     `;
 
-    let graphHtml = "";
+    if(data.graph){
 
-    data.graph.forEach(item=>{
+    renderGraph(
+        data.graph
+    );
 
-        graphHtml += `
-
-        <div class="score-row">
-
-            <div class="score-name">
-
-                ${item.model}
-
-            </div>
-
-            <div class="score-bar">
-
-                <div
-                    class="score-fill"
-                    style="width:${item.percentage}%">
-                </div>
-
-            </div>
-
-            <div>
-
-                ${item.percentage}%
-
-            </div>
-
-        </div>
-
-        `;
-
-    });
-
-    document
-    .getElementById(
-        "graphContainer"
-    ).innerHTML = graphHtml;
+}
 
     messages.scrollTop =
         messages.scrollHeight;

@@ -125,22 +125,6 @@ def save_message(
 
     save_data(data)
 
-    data = load_data()
-
-    for chat in data["chats"]:
-
-        if chat["id"] == chat_id:
-
-            chat["messages"].append({
-
-                "role": role,
-
-                "content": content
-
-            })
-
-    save_data(data)
-
 
 def get_history(chat_id):
 
