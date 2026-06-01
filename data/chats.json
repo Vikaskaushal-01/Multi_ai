@@ -63,6 +63,36 @@
             "id": "b4fa949d-5ce2-4b00-9ccc-33a3c010e9fb",
             "title": "New Chat",
             "messages": []
+        },
+        {
+            "id": "24f88382-946c-4de0-be2c-969d2db8cd45",
+            "title": "tell me about important libraires in python",
+            "messages": [
+                {
+                    "role": "user",
+                    "content": "tell me about important libraires in python"
+                },
+                {
+                    "role": "assistant",
+                    "content": {
+                        "response": "Here are some of the most important libraries in Python, categorized by their functionality:\n\n**Data Science and Machine Learning**\n\n1. **NumPy**: The NumPy library provides support for large, multi-dimensional arrays and matrices, along with a wide range of high-performance mathematical functions to manipulate them.\n2. **Pandas**: The Pandas library provides data structures and functions to efficiently handle structured data, including tabular data such as spreadsheets and SQL tables.\n3. **Scikit-learn**: The Scikit-learn library provides a wide range of algorithms for machine learning, including classification, regression, clustering, and more.\n4. **Matplotlib**: The Matplotlib library provides a comprehensive set of tools for creating high-quality 2D and 3D plots, charts, and graphs.\n5. **Seaborn**: The Seaborn library provides a high-level interface for drawing attractive and informative statistical graphics.\n\n**Data Analysis and Visualization**\n\n1. **Plotly**: The Plotly library provides an interactive visualization library that allows you to create web-based interactive plots, charts, and graphs.\n2. **Bokeh**: The Bokeh library provides another interactive visualization library that allows you to create web-based interactive plots, charts, and graphs.\n3. **Tableau**: The Tableau library provides a data visualization library that allows you to create interactive dashboards and reports.\n\n**Web Development**\n\n1. **Flask**: The Flask library provides a lightweight web framework that allows you to build web applications quickly and easily.\n2. **Django**: The Django library provides a high-level web framework that allows you to build robust and scalable web applications.\n3. **Requests**: The Requests library provides a simple and intuitive way to make HTTP requests in Python.\n4. **BeautifulSoup**: The BeautifulSoup library provides a powerful library for parsing and scraping HTML and XML documents.\n\n**File Input/Output and Data Storage**\n\n1. **Pickle**: The Pickle library provides a way to serialize and deserialize Python objects, allowing you to store and retrieve complex data structures.\n2. **JSON**: The JSON library provides a way to parse and generate JSON data, allowing you to store and retrieve data in a human-readable format.\n3. **SQLite**: The SQLite library provides a lightweight database library that allows you to store and retrieve data in a SQL database.\n4. **MongoDB**: The MongoDB library provides a library for interacting with MongoDB databases.\n\n**Network and System Administration**\n\n1. **Socket**: The Socket library provides a way to create network sockets and communicate with other processes over a network.\n2. **Paramiko**: The Paramiko library provides a library for secure remote access to servers and other network devices.\n3. **psutil**: The psutil library provides a library for retrieving information about running processes and system resources.\n\n**Testing and Debugging**\n\n1. **Unittest**: The Unittest library provides a built-in testing framework for Python.\n2. **Pytest**: The Pytest library provides a popular testing framework for Python.\n3. **PDB**: The PDB library provides a built-in debugger for Python.\n\nThese are just a few examples of the many important libraries available in Python. The specific libraries you use will depend on your project's requirements and your personal preferences.",
+                        "best_model": "Llama",
+                        "confidence": 51.46,
+                        "graph": [
+                            {
+                                "model": "Qwen",
+                                "percentage": 48.54,
+                                "score": 32.26
+                            },
+                            {
+                                "model": "Llama",
+                                "percentage": 51.46,
+                                "score": 34.2
+                            }
+                        ]
+                    }
+                }
+            ]
         }
     ]
 }
