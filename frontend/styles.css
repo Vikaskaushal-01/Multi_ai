@@ -221,3 +221,54 @@ button{
         max-width:90%;
     }
 }
+
+#graphContainer{
+
+    width:100%;
+
+    margin-top:20px;
+
+    padding:20px;
+
+    background:#1e293b;
+
+    border-radius:12px;
+}
+
+.score-row{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-bottom:12px;
+}
+
+.score-name{
+
+    width:100px;
+
+    font-weight:bold;
+}
+
+.score-bar{
+
+    flex:1;
+
+    height:18px;
+
+    background:#334155;
+
+    border-radius:20px;
+
+    overflow:hidden;
+}
+
+.score-fill{
+
+    height:100%;
+
+    background:#2563eb;
+}
