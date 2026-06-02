@@ -5,55 +5,61 @@
 
     <title>Multi AI Decision Engine</title>
 
-    <link rel="stylesheet"
-          href="styles.css">
-
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <aside class="sidebar">
+        <aside class="sidebar">
 
-        <button id="newChatBtn">
+            <button id="newChatBtn">
 
-            + New Chat
-
-        </button>
-
-        <h2>History</h2>
-
-        <div id="chatList"></div>
-
-    </aside>
-
-    <main class="main">
-
-        <div id="messages"></div>
-
-        <div id="graphContainer"></div>
-
-        <div class="input-box">
-
-            <textarea
-                id="question"
-                placeholder="Ask an engineering question..."
-            ></textarea>
-
-            <button onclick="sendMessage()">
-
-                Send
+                + New Chat
 
             </button>
 
-        </div>
+            <h2>History</h2>
 
-    </main>
+            <div id="chatList"></div>
 
-</div>
+        </aside>
 
-<script src="script.js"></script>
+        <main class="main">
+
+            <div id="messages"></div>
+
+            <div id="graphContainer">
+
+                <h2>
+                    Model Confidence Graph
+                </h2>
+
+                <canvas id="confidenceChart" height="250">
+                </canvas>
+
+            </div>
+
+            <div class="input-box">
+
+                <textarea id="question" placeholder="Ask an engineering question..."></textarea>
+
+                <button onclick="sendMessage()">
+
+                    Send
+
+                </button>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <script src="script.js"></script>
 
 </body>
+
 </html>

@@ -93,6 +93,41 @@
                     }
                 }
             ]
+        },
+        {
+            "id": "62fb3e96-0f52-4386-b0b1-af61672cc21c",
+            "title": "tell me about regression in python",
+            "messages": [
+                {
+                    "role": "user",
+                    "content": "tell me about regression in python"
+                },
+                {
+                    "role": "assistant",
+                    "content": {
+                        "response": "**Regression in Python**\n=======================\n\nRegression is a fundamental concept in statistics and machine learning that involves modeling the relationship between a dependent variable (target variable) and one or more independent variables (predictor variables). In Python, regression can be implemented using various libraries, including Scikit-learn and Statsmodels.\n\n**Types of Regression**\n-----------------------\n\n1. **Simple Linear Regression**: Models the relationship between a single independent variable and the dependent variable.\n2. **Multiple Linear Regression**: Models the relationship between multiple independent variables and the dependent variable.\n3. **Polynomial Regression**: Models the relationship between the dependent variable and one or more independent variables using a polynomial equation.\n4. **Ridge Regression**: A type of linear regression that adds a penalty term to the loss function to prevent overfitting.\n5. **Lasso Regression**: A type of linear regression that adds a penalty term to the loss function to prevent overfitting and performs feature selection.\n6. **Elastic Net Regression**: A type of linear regression that combines the effects of L1 and L2 regularization.\n\n**Python Libraries for Regression**\n----------------------------------\n\n1. **Scikit-learn**: Provides a wide range of regression algorithms, including linear regression, ridge regression, lasso regression, and elastic net regression.\n2. **Statsmodels**: Provides a variety of regression algorithms, including linear regression, logistic regression, and generalized linear models.\n\n**Example Code: Simple Linear Regression using Scikit-learn**\n---------------------------------------------------------\n\n```python\nimport numpy as np\nfrom sklearn.linear_model import LinearRegression\nimport matplotlib.pyplot as plt\n\n# Generate sample data\nnp.random.seed(0)\nX = np.random.rand(100, 1)\ny = 3 + 2 * X + np.random.randn(100, 1)\n\n# Create and fit a linear regression model\nmodel = LinearRegression()\nmodel.fit(X, y)\n\n# Print the coefficients\nprint(\"Coefficients: \", model.coef_)\nprint(\"Intercept: \", model.intercept_)\n\n# Plot the data and the regression line\nplt.scatter(X, y)\nplt.plot(X, model.predict(X), color='red')\nplt.show()\n```\n\n**Example Code: Multiple Linear Regression using Scikit-learn**\n---------------------------------------------------------\n\n```python\nimport numpy as np\nfrom sklearn.linear_model import LinearRegression\nimport matplotlib.pyplot as plt\n\n# Generate sample data\nnp.random.seed(0)\nX1 = np.random.rand(100, 1)\nX2 = np.random.rand(100, 1)\ny = 3 + 2 * X1 + 4 * X2 + np.random.randn(100, 1)\n\n# Create and fit a multiple linear regression model\nmodel = LinearRegression()\nmodel.fit(np.hstack((X1, X2)), y)\n\n# Print the coefficients\nprint(\"Coefficients: \", model.coef_)\nprint(\"Intercept: \", model.intercept_)\n\n# Plot the data and the regression line\nplt.scatter(X1, y)\nplt.plot(X1, model.predict(np.hstack((X1, np.zeros((X1.shape[0], 1))))), color='red')\nplt.show()\n```\n\n**Example Code: Ridge Regression using Scikit-learn**\n-------------------------------------------------\n\n```python\nimport numpy as np\nfrom sklearn.linear_model import Ridge\nimport matplotlib.pyplot as plt\n\n# Generate sample data\nnp.random.seed(0)\nX = np.random.rand(100, 1)\ny = 3 + 2 * X + np.random.randn(100, 1)\n\n# Create and fit a ridge regression model\nmodel = Ridge(alpha=0.1)\nmodel.fit(X, y)\n\n# Print the coefficients\nprint(\"Coefficients: \", model.coef_)\nprint(\"Intercept: \", model.intercept_)\n\n# Plot the data and the regression line\nplt.scatter(X, y)\nplt.plot(X, model.predict(X), color='red')\nplt.show()\n```\n\nThese examples demonstrate how to implement simple linear regression, multiple linear regression, and ridge regression using Scikit-learn. You can modify the code to fit your specific needs and experiment with different regression algorithms and techniques.",
+                        "best_model": "Llama",
+                        "confidence": 50.96,
+                        "graph": [
+                            {
+                                "model": "Qwen",
+                                "percentage": 49.04,
+                                "score": 40.47
+                            },
+                            {
+                                "model": "Llama",
+                                "percentage": 50.96,
+                                "score": 42.06
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "f44f5e8c-a2f8-477c-ad44-5546c9b75cef",
+            "title": "New Chat",
+            "messages": []
         }
     ]
 }
