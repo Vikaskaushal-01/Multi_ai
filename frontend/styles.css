@@ -233,6 +233,8 @@ button{
     background:#1e293b;
 
     border-radius:12px;
+
+    min-height:350px;
 }
 
 .score-row{

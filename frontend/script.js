@@ -212,53 +212,81 @@ function loadHistory(chat){
 
 function renderGraph(graph){
 
-    const container =
-        document.getElementById(
-            "graphContainer"
+    const ctx =
+        document
+        .getElementById(
+            "confidenceChart"
         );
 
-    container.innerHTML = `
-
-    <h2>
-    Model Confidence
-    </h2>
-
-    `;
-
-    if(!graph)
+    if(!ctx || !graph)
         return;
 
-    graph.forEach(item=>{
+    if(window.myChart){
 
-        container.innerHTML += `
+        window.myChart.destroy();
 
-        <div class="score-row">
+    }
 
-            <div class="score-name">
+    const labels =
+        graph.map(
+            x => x.model
+        );
 
-                ${item.model}
+    const scores =
+        graph.map(
+            x => x.percentage
+        );
 
-            </div>
+    window.myChart =
+        new Chart(
 
-            <div class="score-bar">
+            ctx,
 
-                <div
-                    class="score-fill"
-                    style="width:${item.percentage}%">
-                </div>
+            {
 
-            </div>
+                type:"bar",
 
-            <div>
+                data:{
 
-                ${item.percentage}%
+                    labels:labels,
 
-            </div>
+                    datasets:[{
 
-        </div>
+                        label:
+                        "Confidence %",
 
-        `;
-    });
+                        data:scores,
+
+                        borderWidth:1
+
+                    }]
+
+                },
+
+                options:{
+
+                    responsive:true,
+
+                    maintainAspectRatio:false,
+
+                    scales:{
+
+                        y:{
+
+                            beginAtZero:true,
+
+                            max:100
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
 }
 
 async function sendMessage(){
